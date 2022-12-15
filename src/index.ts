@@ -10,6 +10,8 @@ import helmet from "helmet";
 import cors from "cors";
 import xss from "xss-clean";
 import rateLimiter from "express-rate-limit";
+import morgan from "morgan";
+import compression from "compression";
 
 // error handler
 import notFoundMiddleware from "./middleware/not_found.js";
@@ -27,8 +29,10 @@ app.use(
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
+app.use(morgan("dev"));
 app.use(xss());
-// extra packages
+app.use(express.urlencoded({ extended: false }));
+app.use(compression());
 
 //routes
 app.use("/api/v1/users", authRoutes);
