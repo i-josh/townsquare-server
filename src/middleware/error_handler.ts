@@ -6,8 +6,9 @@ const errorHandlerMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
+
   let customError = {
-    statusCode: err.statusCode || 500,
+    status: err.status || 500,
     msg: err.message || "something went wrong",
   };
 
@@ -15,19 +16,21 @@ const errorHandlerMiddleware = (
     customError.msg = Object.values(err.errors)
       .map((item: any) => item.message)
       .join(",");
-    customError.statusCode = 400;
+    customError.status = 400;
   }
 
   if (err.name === "CastError") {
     customError.msg = `No item found with id: ${err.value}`;
-    customError.statusCode = 404;
+    customError.status = 404;
   }
 
   if (err.code && err.code === 11000) {
     customError.msg = `${Object.keys(err.keyValue)} already exists`;
-    customError.statusCode = 400;
+    customError.status = 400;
   }
-  return res.status(customError.statusCode).json({ msg: customError.msg });
+  return res
+    .status(customError.status)
+    .json({ status: "error", message: customError.msg });
 };
 
 export default errorHandlerMiddleware;

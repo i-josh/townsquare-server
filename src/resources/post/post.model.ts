@@ -1,4 +1,5 @@
 import { Schema, model, Types } from "mongoose";
+import Post from "./post.interface.js";
 
 const PostSchema = new Schema(
   {
@@ -46,4 +47,4 @@ PostSchema.pre("save", async function (): Promise<void> {
   this.views = 0;
 });
 
-export default model("Post", PostSchema);
+export default model<Post>("Post", PostSchema);

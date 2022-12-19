@@ -1,7 +1,7 @@
 import { BadRequestError, UnauthenticatedError } from "../errors/index.js";
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import User from "../models/user.js";
+import User from "../resources/user/user.model.js";
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;

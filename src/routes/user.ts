@@ -1,5 +1,5 @@
-import { login, register } from "../controllers/auth.js";
-import { loginValidation, registerValidation } from "../validation/auth.js";
+import { login, register } from "../resources/user/user.controller.js";
+import { loginValidation, registerValidation } from "../resources/user/user.validation.js";
 import express from "express";
 import validationMiddleware from "../middleware/validation_middleware.js";
 

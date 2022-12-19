@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import User from "./user.interface.js";
 
 const UserSchema = new Schema(
   {
@@ -61,4 +62,4 @@ UserSchema.methods.validatePassword = async function (
   return await bcrypt.compare(reqPassword, this.password);
 };
 
-export default model("User", UserSchema);
+export default model<User>("User", UserSchema);

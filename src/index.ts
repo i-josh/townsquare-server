@@ -2,9 +2,7 @@ import "dotenv/config";
 import "express-async-errors";
 import express from "express";
 import connectDB from "./db/connect.js";
-import authenticateUser from "./middleware/authentication.js";
-import authRoutes from "./routes/auth.js";
-import postRoutes from "./routes/post.js";
+import router from "./routes/index.js"
 
 //security
 import helmet from "helmet";
@@ -36,8 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 
 //routes
-app.use("/api/v1/users", authRoutes);
-app.use("/api/v1/posts", authenticateUser, postRoutes);
+app.use( "/api/v1/", router);
 
 //error handlers
 app.use(notFoundMiddleware);
