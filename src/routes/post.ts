@@ -16,7 +16,7 @@ router.post(
   authenticateUser,
   createPost
 );
-router.get("/all", getAllPosts);
+router.get("/", getAllPosts);
 router.post("/like", authenticateUser, likePost);
 
 export default router;
