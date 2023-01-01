@@ -2,6 +2,8 @@ import Post from "./post.interface.js";
 import postModel from "./post.model.js";
 import LikeModel from "../like/like.model.js";
 import Like from "../like/like.interface.js";
+import Comment from "../comment/comment.interface.js";
+import commentModel from "../comment/comment.model.js";
 
 export default class PostService {
   public async createPost(body: object): Promise<Post> {
@@ -51,5 +53,16 @@ export default class PostService {
     }
 
     return post;
+  }
+
+  public async addComment(body: any): Promise<Comment> {
+    console.log(body);
+    const comment: Comment = await commentModel.create(body);
+    return comment;
+  }
+
+  public async getComments(postId: string): Promise<Comment[]> {
+    const comments: Comment[] = await commentModel.find({ postId: postId });
+    return comments;
   }
 }

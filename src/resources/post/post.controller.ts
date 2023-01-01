@@ -37,3 +37,18 @@ export async function likePost(req: Request, res: Response) {
   }
   res.status(200).json({ status: "success", like });
 }
+
+export async function addComment(req: Request, res: Response) {
+  const user = req.user;
+  req.body.userId = user._id;
+
+  const comment = await service.addComment({ ...req.body });
+  res.status(201).json({ status: "success", comment });
+}
+
+export async function getComments(req: Request, res: Response) {
+  const { postId } = req.body;
+
+  const comments = await service.getComments(postId);
+  res.status(200).json({ status: "success", count: comments.length, comments });
+}
