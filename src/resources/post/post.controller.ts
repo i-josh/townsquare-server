@@ -13,6 +13,23 @@ export async function createPost(req: Request, res: Response) {
   res.status(201).json({ status: "success", post });
 }
 
+export async function updatePost(req: Request, res: Response) {
+  const user = req.user;
+
+  const userId = user._id;
+  const { postId } = req.body;
+
+  if (!postId) {
+    throw new BadRequestError("post id is required");
+  }
+
+  const post = await service.updatePost(req.body, postId, userId);
+  if (!post) {
+    throw new BadRequestError("post not updated");
+  }
+  res.status(200).json({ status: "success", post });
+}
+
 export async function getAllPosts(req: Request, res: Response) {
   const posts = await service.getAllPosts();
   res.status(200).json({ status: "success", count: posts.length, data: posts });
@@ -47,8 +64,15 @@ export async function addComment(req: Request, res: Response) {
 }
 
 export async function getComments(req: Request, res: Response) {
-  const { postId } = req.body;
+  const postId: any = req.params.id;
 
   const comments = await service.getComments(postId);
   res.status(200).json({ status: "success", count: comments.length, comments });
+}
+
+export async function incrementViews(req: Request, res: Response) {
+  const postId: any = req.params.id;
+
+  await service.incrementViews(postId);
+  res.status(200).json({ status: "success" });
 }

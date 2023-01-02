@@ -5,7 +5,3 @@ export const addCommentValidation = Joi.object({
   comment: Joi.string().required(),
   reply: Joi.string(),
 });
-
-export const getCommentsValidation = Joi.object({
-  postId: Joi.string().required(),
-});

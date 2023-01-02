@@ -3,13 +3,15 @@ import {
   createPost,
   getAllPosts,
   getComments,
+  incrementViews,
   likePost,
+  updatePost,
 } from "../resources/post/post.controller.js";
-import { createPostValidation } from "../resources/post/post.validation.js";
 import {
-  addCommentValidation,
-  getCommentsValidation,
-} from "../resources/comment/comment.validation.js";
+  createPostValidation,
+  updatePostValidation,
+} from "../resources/post/post.validation.js";
+import { addCommentValidation } from "../resources/comment/comment.validation.js";
 import express from "express";
 import validationMiddleware from "../middleware/validation_middleware.js";
 import authenticateUser from "../middleware/authentication.js";
@@ -38,10 +40,17 @@ router.post(
 );
 
 //get all comments for post
-router.get(
-  "/comments",
-  validationMiddleware(getCommentsValidation),
-  getComments
+router.get("/comments/:id", getComments);
+
+//update post
+router.post(
+  "/update",
+  validationMiddleware(updatePostValidation),
+  authenticateUser,
+  updatePost
 );
+
+//increase views
+router.get("/updateViews/:id", incrementViews);
 
 export default router;
