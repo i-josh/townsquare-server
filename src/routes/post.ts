@@ -3,6 +3,8 @@ import {
   createPost,
   getAllPosts,
   getComments,
+  getPost,
+  getPostWithCategory,
   incrementViews,
   likePost,
   updatePost,
@@ -52,5 +54,11 @@ router.post(
 
 //increase views
 router.get("/updateViews/:id", incrementViews);
+
+//get single post
+router.get("/:id", getPost);
+
+//get post by category
+router.get("/category/:category",getPostWithCategory)
 
 export default router;

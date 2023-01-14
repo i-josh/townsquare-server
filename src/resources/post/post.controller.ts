@@ -76,3 +76,21 @@ export async function incrementViews(req: Request, res: Response) {
   await service.incrementViews(postId);
   res.status(200).json({ status: "success" });
 }
+
+export async function getPost(req: Request, res: Response) {
+  const postId: any = req.params.id;
+  const post = await service.getPost(postId);
+  if (!post) {
+    throw new BadRequestError("cant get post");
+  }
+  res.status(200).json({ status: "success", post });
+}
+
+export async function getPostWithCategory(req: Request, res: Response) {
+  const category: string = req.params.category;
+  const posts = await service.getPostWithCategory(category);
+  if (!posts) {
+    throw new BadRequestError("cant get posts");
+  }
+  res.status(200).json({ status: "success", count: posts.length, data: posts });
+}

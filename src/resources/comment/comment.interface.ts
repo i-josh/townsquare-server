@@ -5,4 +5,5 @@ export default interface Comment extends Document {
   postId: string;
   comment: string;
   reply: string;
+  replyUser: string;
 }

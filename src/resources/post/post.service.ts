@@ -4,6 +4,7 @@ import LikeModel from "../like/like.model.js";
 import Like from "../like/like.interface.js";
 import Comment from "../comment/comment.interface.js";
 import commentModel from "../comment/comment.model.js";
+import { ObjectId } from "mongodb";
 
 export default class PostService {
   public async createPost(body: object): Promise<Post> {
@@ -70,7 +71,7 @@ export default class PostService {
     }
   }
 
-  private async getPost(id: string): Promise<Post | null> {
+  public async getPost(id: string): Promise<Post | null> {
     const post: Post = await postModel.findById(id);
 
     if (!post) {
@@ -86,10 +87,63 @@ export default class PostService {
     return comment;
   }
 
-  public async getComments(postId: string): Promise<Comment[]> {
-    const comments: Comment[] = await commentModel
-      .find({ postId: postId })
-      .sort({ createdAt: -1 });
+  public async getComments(id: string): Promise<Comment[]> {
+    // const comments: Comment[] = await commentModel.find({ postId: postId });
+    const comments: Comment[] = await commentModel.aggregate([
+      { $match: { postId: new ObjectId(id) } },
+      {
+        $lookup: {
+          from: "likes",
+          localField: "_id",
+          foreignField: "commentId",
+          as: "likes",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "replyUser",
+          foreignField: "_id",
+          as: "replyUser",
+        },
+      },
+    ]);
+
     return comments;
+  }
+
+  public async getPostWithCategory(category: string): Promise<Post[]> {
+    const posts: Post[] = await postModel
+      .aggregate([
+        {
+          $match: { category: category },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "createdBy",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $lookup: {
+            from: "likes",
+            localField: "_id",
+            foreignField: "postId",
+            as: "likes",
+          },
+        },
+      ])
+      .sort({ createdAt: -1 });
+    return posts;
   }
 }

@@ -17,6 +17,10 @@ const CommentSchema = new Schema(
       required: [true, "comment is required"],
     },
     reply: String,
+    replyUser: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
