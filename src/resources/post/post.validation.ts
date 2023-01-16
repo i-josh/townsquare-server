@@ -4,6 +4,8 @@ export const createPostValidation = Joi.object({
   title: Joi.string().required(),
   body: Joi.string().required(),
   category: Joi.string().required(),
+  sponsored: Joi.boolean(),
+  image: Joi.string(),
 });
 
 export const updatePostValidation = Joi.object({
@@ -11,4 +13,6 @@ export const updatePostValidation = Joi.object({
   title: Joi.string().required(),
   body: Joi.string().required(),
   category: Joi.string().required(),
+  sponsored: Joi.boolean(),
+  image: Joi.string(),
 });

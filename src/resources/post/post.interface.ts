@@ -8,4 +8,6 @@ export default interface Post extends Document {
   category: string;
   createdBy: string;
   likes: User[];
+  image: string;
+  sponsored: boolean;
 }

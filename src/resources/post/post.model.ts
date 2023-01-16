@@ -14,6 +14,13 @@ const PostSchema = new Schema(
     views: {
       type: Number,
     },
+    image: {
+      type: String,
+    },
+    sponsored: {
+      type: Boolean,
+      default: false,
+    },
     category: {
       type: String,
       enum: [
