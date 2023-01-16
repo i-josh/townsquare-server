@@ -17,12 +17,14 @@ import { addCommentValidation } from "../resources/comment/comment.validation.js
 import express from "express";
 import validationMiddleware from "../middleware/validation_middleware.js";
 import authenticateUser from "../middleware/authentication.js";
+import upload from "../middleware/upload.middleware.js";
 
 const router = express.Router();
 
 //create post
 router.post(
   "/create",
+  upload.single("image"),
   validationMiddleware(createPostValidation),
   authenticateUser,
   createPost
