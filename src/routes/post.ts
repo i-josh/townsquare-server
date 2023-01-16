@@ -61,6 +61,6 @@ router.get("/updateViews/:id", incrementViews);
 router.get("/:id", getPost);
 
 //get post by category
-router.get("/category/:category",getPostWithCategory)
+router.get("/category/:category", getPostWithCategory);
 
 export default router;

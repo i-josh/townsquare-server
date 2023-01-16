@@ -39,6 +39,11 @@ export default class PostService {
     const posts: Post[] = await postModel
       .aggregate([
         {
+          $match: {
+            sponsored: false || null,
+          },
+        },
+        {
           $lookup: {
             from: "users",
             localField: "createdBy",
@@ -52,6 +57,27 @@ export default class PostService {
             localField: "_id",
             foreignField: "postId",
             as: "likes",
+          },
+        },
+      ])
+      .sort({ createdAt: -1 });
+    return posts;
+  }
+
+  public async getSponsoredPosts(): Promise<Post[]> {
+    const posts: Post[] = await postModel
+      .aggregate([
+        {
+          $match: {
+            sponsored: true,
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "createdBy",
+            foreignField: "_id",
+            as: "user",
           },
         },
       ])

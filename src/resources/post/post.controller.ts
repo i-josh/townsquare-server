@@ -38,7 +38,11 @@ export async function updatePost(req: Request, res: Response) {
 }
 
 export async function getAllPosts(req: Request, res: Response) {
-  const posts = await service.getAllPosts();
+  const params = req.query;
+
+  const posts = params.sponsored === "true"
+    ? await service.getSponsoredPosts()
+    : await service.getAllPosts();
   res.status(200).json({ status: "success", count: posts.length, data: posts });
 }
 
