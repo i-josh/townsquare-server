@@ -49,6 +49,7 @@ router.get("/comments/:id", getComments);
 //update post
 router.post(
   "/update",
+  upload.single("image"),
   validationMiddleware(updatePostValidation),
   authenticateUser,
   updatePost

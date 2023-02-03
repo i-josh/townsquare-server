@@ -1,8 +1,6 @@
 import express from "express";
 import postRoutes from "./post.js"
 import userRoutes from "./user.js"
-import authenticateUser from "../middleware/authentication.js";
-
 
 const router = express.Router();
 
