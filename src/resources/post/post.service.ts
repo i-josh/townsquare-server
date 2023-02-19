@@ -6,7 +6,7 @@ import Comment from "../comment/comment.interface.js";
 import commentModel from "../comment/comment.model.js";
 import { ObjectId } from "mongodb";
 
-export default class PostService {
+class PostService {
   public async createPost(body: object): Promise<Post> {
     const post: Post = await postModel.create(body);
     return post;
@@ -40,7 +40,7 @@ export default class PostService {
       .aggregate([
         {
           $match: {
-            sponsored: false || null,
+            sponsored: false,
           },
         },
         {
@@ -59,6 +59,25 @@ export default class PostService {
             as: "likes",
           },
         },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "_id",
+            foreignField: "postId",
+            as: "comments",
+          },
+        },
+        {
+          $project: {
+            'user.password': 0,
+          }
+        },
+        {
+          "$addFields": {
+            "comments": { $size: "$comments" },
+            "user": { $arrayElemAt: ['$user', 0] }
+          }
+        }
       ])
       .sort({ createdAt: -1 });
     return posts;
@@ -80,6 +99,33 @@ export default class PostService {
             as: "user",
           },
         },
+        {
+          $lookup: {
+            from: "likes",
+            localField: "_id",
+            foreignField: "postId",
+            as: "likes",
+          },
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "_id",
+            foreignField: "postId",
+            as: "comments",
+          },
+        },
+        {
+          $project: {
+            'user.password': 0,
+          }
+        },
+        {
+          "$addFields": {
+            "comments": { $size: "$comments" },
+            "user": { $arrayElemAt: ['$user', 0] }
+          }
+        }
       ])
       .sort({ createdAt: -1 });
     return posts;
@@ -173,3 +219,5 @@ export default class PostService {
     return posts;
   }
 }
+
+export default PostService
